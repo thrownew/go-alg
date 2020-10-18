@@ -48,9 +48,8 @@ func (n *Node) WalkPostOrder(f WalkFunc) {
 	walkRecursion(postOrder, n, 0, f)
 }
 
-func (n *Node) WalkReverseInOrder(f WalkFunc) {
-	walkRecursion(postOrder, n, 0, f)
-}
+// TODO implement Morris in-order Tree
+// https://en.wikipedia.org/wiki/Threaded_binary_tree
 
 // https://en.wikipedia.org/wiki/Tree_traversal#Depth-first_search_of_binary_tree
 func walkRecursion(o order, n *Node, level int, f WalkFunc) bool {
