@@ -8,27 +8,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Set up Go 1.15
-        uses: actions/setup-go@v1
-        with:
-          go-version: 1.15
-        id: go
-
-      - name: Check out code into the Go module directory
+      - name: Check out code
         uses: actions/checkout@v2
 
-      - uses: actions/cache@v1
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '^1.16'
+      - run: go version
+
+      - name: Cache modules
+        uses: actions/cache@v2
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
 
-      - name: Install GolangCI-Lint 1.31.0
-        run: curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s v1.31.0
+      - name: Vendor modules
+        run: go mod vendor
+
+      - name: Install GolangCI-Lint
+        run: curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s v1.38.0
 
       - name: Run Linter
-        run: ./bin/golangci-lint -v run
+        run: ./bin/golangci-lint -v run --modules-download-mode vendor
 
       - name: Run Unit tests
         run: make test-unit

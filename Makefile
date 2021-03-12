@@ -12,13 +12,13 @@ test-unit:
 
 .PHONY: lint
 lint:
-	golangci-lint run
+	golangci-lint run -v
 
 .PHONY: lint-fix
 lint-fix:
 	goimports -local github.com/thrownew/go-alg -w .
 	go fmt ./...
-	golangci-lint -v run
+	golangci-lint run -v
 
 .PHONY: generate
 generate:
